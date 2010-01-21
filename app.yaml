@@ -1,0 +1,11 @@
+application: test-fink08
+version: 1
+runtime: python
+api_version: 1
+
+handlers:
+    - url: /_wave/.*
+      script: ChemSpidey.py
+    - url: /assets
+      static_dir: assets
+
