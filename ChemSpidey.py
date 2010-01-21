@@ -11,6 +11,7 @@ Gives you the an image of a named chemical for text in a blip. Heavily dependant
 
 __author__ = 'cameron.neylon@stfc.ac.uk (Cameron Neylon)'
 
+import logging
 from waveapi import events
 from waveapi import model
 from waveapi import robot
@@ -46,6 +47,7 @@ def OnBlipSubmitted(properties, context):
     compiledregex = re.compile(key+leftdelim+query+optional+rightdelim, re.IGNORECASE|re.DOTALL)
     chemicallist = compiledregex.finditer(contents)
 
+    logging.debug("RE was " + compiledregex)
     if chemicallist != None:
         count = 0
         changeslist = []
