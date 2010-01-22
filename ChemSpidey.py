@@ -47,7 +47,6 @@ def OnBlipSubmitted(properties, context):
     compiledregex = re.compile(key+leftdelim+query+optional+rightdelim, re.IGNORECASE|re.DOTALL)
     chemicallist = compiledregex.finditer(contents)
 
-    logging.debug("RE was " + compiledregex)
     if chemicallist != None:
         count = 0
         changeslist = []
@@ -71,15 +70,14 @@ def OnBlipSubmitted(properties, context):
                 insert = insert + ", " + chemicalname.group(3) + 'g, ' + str(millimoles) + " millimoles"
 
             insert = insert + ") "
-                    
-            changeslist.append([r, insert, compound, url])
-            count = count + 1
-
-        while count != 0:
-            count = count - 1
-            blip.GetDocument().SetTextInRange(changeslist[count][0], changeslist[count][1])
-            SetManualLink(blip, changeslist[count][2], changeslist[count][3])
-            SetManualLink(blip, changeslist[count][1], 'chem', 'lang')
+            changeslist.append([r, insert, compound, url]) # the range of the word to replace, the text to replace it with, the compound id, it's CS url
+            logging.debug(insert)
+            
+        for changes in changeslist:
+            logging.debug(str(changes))
+            blip.GetDocument().SetTextInRange(changes[0], changes[1])
+            SetManualLink(blip, changes[2], changes[3])
+            SetManualLink(blip, changes[1], 'chem', 'lang')
             
 
 def OnRobotAdded(properties, context):
